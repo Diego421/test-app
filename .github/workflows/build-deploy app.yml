@@ -55,8 +55,8 @@ jobs:
         with:
 #store password and username in GitHub secrets and reference it.
           registry: shinyapp1.azurecr.io
-          username: $secrets.AZURE_USER
-          password: $secrets.AZURE_PASSWORD
+          username: ${{ secrets.AZURE_USER }}
+          password: ${{ secrets.AZURE_PASSWORD }}
 # to connect to container registry the name has to be in lowercase and strore it in GITHUB environment
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
