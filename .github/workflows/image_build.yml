@@ -29,14 +29,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # install cosign tool that will be used to sign the image before it is pushed to registry
-      - name: Install cosign
-        #expression if to check condition pull_request
-        if: github.event_name != 'pull_request'
-        #using cosign for keyless signature of the container image
-        uses: sigstore/cosign-installer@main
-        with:
-          cosign-release: 'v2.0.2' # optional
       #Docker container builder
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
@@ -67,14 +59,3 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-      # Sign the resulting Docker image
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance .
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
