@@ -22,5 +22,5 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 COPY DESCRIPTION .
 RUN R -e 'install.packages("remotes"); remotes::install_deps(dependencies = TRUE)'
 COPY . .
-
-CMD ["R", "-e", "shiny::runApp('/app', host = '0.0.0.0', port = 3838)"]
+CMD ["R", "-e", "shiny::runApp('/app')"]
+#CMD ["R", "-e", "shiny::runApp('/app', host = '0.0.0.0', port = 3838)"]
