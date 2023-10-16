@@ -8,11 +8,11 @@ env:
   #defines when the workflow is triggered
 on:
   push:
-    branches: ['main']
+    branches: ['test']
     # Publish semver tags as releases.
-#  pull_request:
-#    branches: ['main']
-#  workflow_dispatch:
+  pull_request:
+    branches: ['test']
+  workflow_dispatch:
 
 jobs:
   build:
@@ -57,5 +57,5 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
+          labels: ${{ steps.meta.outputs.labels }}         
+             #   cache-from: type=gha
